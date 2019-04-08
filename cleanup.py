@@ -64,8 +64,8 @@ def getDateDaysAgo(daysAgo):
 def deleteArtifact(art):
     full_url = "%s/%s/%s/%s" % (url, art['repo'], art['path'], art['name'])
     print "Deleting artifact: " + full_url
-    r = requests.delete(url = full_url, headers = headers)
-    print r.content
+    #r = requests.delete(url = full_url, headers = headers)
+    #print r.content
 
 if __name__ == '__main__':
     main()
