@@ -11,8 +11,10 @@ credentials = base64.b64encode(username + ":" + password)
 headers = {'Authorization': 'Basic ' + credentials}
 artifactAgeInDays = 150
 
-#cleanupRepos = [
-#    'Midaxo.Auth',
+cleanupRepos = [
+    'Midaxo.Auth',
+]
+
 #    'account-settings',
 #    'admin-console',
 #    'apigateway',
@@ -24,11 +26,6 @@ artifactAgeInDays = 150
 #    'frontend',
 #    'platform',
 #    'sharepoint'
-#]
-
-cleanupRepos = [
-    'test-repo'
-]
 
 def main():
     for repo in cleanupRepos:
