@@ -13,6 +13,7 @@ artifactAgeInDays = 150
 
 cleanupRepos = [
     'Midaxo.Auth',
+    'account-settings',
 ]
 
 #    'account-settings',
