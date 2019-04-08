@@ -9,7 +9,7 @@ username = os.environ['ARTIFACTORY_USERNAME']
 password = os.environ['ARTIFACTORY_PASSWORD']
 credentials = base64.b64encode(username + ":" + password)
 headers = {'Authorization': 'Basic ' + credentials}
-artifactAgeInDays = 180
+artifactAgeInDays = 125
 
 cleanupRepos = [
     'Midaxo.Auth',
