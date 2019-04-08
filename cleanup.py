@@ -11,19 +11,23 @@ credentials = base64.b64encode(username + ":" + password)
 headers = {'Authorization': 'Basic ' + credentials}
 artifactAgeInDays = 150
 
+#cleanupRepos = [
+#    'Midaxo.Auth',
+#    'account-settings',
+#    'admin-console',
+#    'apigateway',
+#    'auth',
+#    'exago',
+#    'exago-api-loader',
+#    'exago-integration-service',
+#    'exago-web',
+#    'frontend',
+#    'platform',
+#    'sharepoint'
+#]
+
 cleanupRepos = [
-    'Midaxo.Auth',
-    'account-settings',
-    'admin-console',
-    'apigateway',
-    'auth',
-    'exago',
-    'exago-api-loader',
-    'exago-integration-service',
-    'exago-web',
-    'frontend',
-    'platform',
-    'sharepoint'
+    'test-repo'
 ]
 
 def main():
@@ -35,8 +39,8 @@ def deleteOldArtifacts(repo):
     results = findArtifacts(criteria)
     print 'Found %s removable artifacts for %s ' % (results['range']['total'], repo)
     for artifact in results['results']:
-        print artifact['name']
-    
+        deleteArtifact(artifact)
+
 def findArtifacts(criteria):
     query = "items.find(%s)" % criteria
     r = requests.post(url = url + "/api/search/aql", headers = headers, data = query)
@@ -58,6 +62,12 @@ def createSearchCriteria(repo):
 def getDateDaysAgo(daysAgo):
     d = date.today() - timedelta(days = daysAgo)
     return d.isoformat()
+
+def deleteArtifact(art):
+    full_url = "%s/%s/%s/%s" % (url, art['repo'], art['path'], art['name'])
+    print "Deleting artifact: " + full_url
+    #r = requests.delete(url = full_url, headers = headers)
+    #print r.content
 
 if __name__ == '__main__':
     main()
