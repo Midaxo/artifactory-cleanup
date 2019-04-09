@@ -12,7 +12,6 @@ headers = {'Authorization': 'Basic ' + credentials}
 artifactAgeInDays = 120
 
 cleanupRepos = [
-    'Midaxo.Auth',
     'account-settings',
     'admin-console',
     'apigateway',
@@ -21,13 +20,10 @@ cleanupRepos = [
     'exago-api-loader',
     'exago-integration-service',
     'exago-web',
+    'frontend',
+    'platform',
+    'sharepoint'
 ]
-
-
-
-#    'frontend',
-#    'platform',
-#    'sharepoint'
 
 def main():
     for repo in cleanupRepos:
