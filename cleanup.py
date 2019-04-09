@@ -22,12 +22,22 @@ cleanupRepos = [
     'exago-web',
     'frontend',
     'platform',
-    'sharepoint'
+    'sharepoint',
+    'multibranch-pipeline-example'
 ]
 
 def main():
+    # First empty the trashcan so that artifacts placed
+    # there during the previous run are permanently deleted
+    # emptyTrashcan()
+    # Clean all the repos found in the list
     for repo in cleanupRepos:
         deleteOldArtifacts(repo)
+
+def emptyTrashcan():
+    print "Emptying Artifactory trashcan"
+    r = requests.post(url = url + "/api/trash/empty", headers = headers)
+    print r.content
 
 def deleteOldArtifacts(repo):
     criteria = createSearchCriteria(repo = repo)
