@@ -9,7 +9,7 @@ username = os.environ['ARTIFACTORY_USERNAME']
 password = os.environ['ARTIFACTORY_PASSWORD']
 credentials = base64.b64encode(username + ":" + password)
 headers = {'Authorization': 'Basic ' + credentials}
-artifactAgeInDays = 125
+artifactAgeInDays = 120
 
 cleanupRepos = [
     'Midaxo.Auth',
@@ -17,14 +17,14 @@ cleanupRepos = [
     'admin-console',
     'apigateway',
     'auth',
+    'exago',
+    'exago-api-loader',
+    'exago-integration-service',
+    'exago-web',
 ]
 
 
 
-#    'exago',
-#    'exago-api-loader',
-#    'exago-integration-service',
-#    'exago-web',
 #    'frontend',
 #    'platform',
 #    'sharepoint'
@@ -36,7 +36,7 @@ def main():
 def deleteOldArtifacts(repo):
     criteria = createSearchCriteria(repo = repo)
     results = findArtifacts(criteria)
-    print '\n\nFound %s removable artifacts for %s ' % (results['range']['total'], repo)
+    print '\n\n\n*** Found %s removable artifacts for %s ***' % (results['range']['total'], repo)
     for artifact in results['results']:
         deleteArtifact(artifact)
 
