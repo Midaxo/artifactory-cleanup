@@ -9,7 +9,7 @@ username = os.environ['ARTIFACTORY_USERNAME']
 password = os.environ['ARTIFACTORY_PASSWORD']
 credentials = base64.b64encode(username + ":" + password)
 headers = {'Authorization': 'Basic ' + credentials}
-artifactAgeInDays = 120
+artifactAgeInDays = 125
 
 cleanupRepos = [
     'account-settings',
@@ -70,7 +70,7 @@ def getDateDaysAgo(daysAgo):
 
 def deleteArtifact(art):
     full_url = "%s/%s/%s/%s" % (url, art['repo'], art['path'], art['name'])
-    print "Deleting artifact: " + full_url
+    print "Deleting artifact: %s" % art['name']
     #r = requests.delete(url = full_url, headers = headers)
     #print r.content
 
