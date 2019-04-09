@@ -15,10 +15,12 @@ cleanupRepos = [
     'Midaxo.Auth',
     'account-settings',
     'admin-console',
+    'apigateway',
+    'auth',
 ]
 
-#    'apigateway',
-#    'auth',
+
+
 #    'exago',
 #    'exago-api-loader',
 #    'exago-integration-service',
@@ -34,7 +36,7 @@ def main():
 def deleteOldArtifacts(repo):
     criteria = createSearchCriteria(repo = repo)
     results = findArtifacts(criteria)
-    print 'Found %s removable artifacts for %s ' % (results['range']['total'], repo)
+    print '\n\nFound %s removable artifacts for %s ' % (results['range']['total'], repo)
     for artifact in results['results']:
         deleteArtifact(artifact)
 
