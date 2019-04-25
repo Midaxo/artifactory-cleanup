@@ -4,7 +4,7 @@ A cleanup script for Artifactory that removes old (currently older than 4 months
 - Its name begins with release-*
 - It has Artifactory property "skipCleanup=true" set
 
-Deleting artifact from Artifactory actually just puts it into trashcan. The trashcan must be emptied to remove the artifact permanently. Emptying the trash is done at the beginning of the script. This means that - since the script is run every day at midnight - there's a time window of 24h to restore an artifact that was accidentally deleted before it gets permanently removed during the next run.
+Deleting artifact from Artifactory actually just puts it into trashcan. Artifacts will stay in the trashcan the number of days defined in the Retention Period field of Artifactory settings (under General Configuration).
 
 AQL (Artifactory Query Language) and Artifactory REST API are used in the implementation.
 
