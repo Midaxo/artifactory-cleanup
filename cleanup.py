@@ -26,10 +26,16 @@ cleanupRepos = [
     'multibranch-pipeline-example'
 ]
 
+cleanupDockerRepos = [
+    'docker-local'
+]
+
 
 def main():
     # Clean all the repos found in the list
     for repo in cleanupRepos:
+        deleteOldArtifacts(repo)
+    for repo in cleanupDockerRepos:
         deleteOldArtifacts(repo)
 
 
@@ -57,8 +63,13 @@ def createSearchCriteria(repo):
     # Only include artifacts that DO NOT have skipCleanup set to 'true'
     criteria['@skipCleanup'] = {"$ne": "true"}
     # Do not include release artifacts
-    criteria['name'] = {"$nmatch": "release-*"}
-
+    if repo in cleanupDockerRepos:
+        # manifest.json here is so we don't target individual layers
+        # artifactory will clean orphaned layers up automatically
+        criteria['name'] = {"$eq": "manifest.json"}
+        criteria['@docker.manifest'] = {"$nmatch": "release-*"}
+    if repo in cleanupRepos:
+        criteria['name'] = {"$nmatch": "release-*"}
     return json.dumps(criteria)
 
 
@@ -68,10 +79,16 @@ def getDateDaysAgo(daysAgo):
 
 
 def deleteArtifact(art):
-    full_url = "%s/%s/%s/%s" % (url, art['repo'], art['path'], art['name'])
-    print("Deleting artifact: %s" % art['name'])
+    # If art['name] is manifest.json, this is a docker artifact
+    artifact_name = art['name'] if art['name'] != 'manifest.json' else False
+    # In case of a docker repository
+    # URL should not include /manifest.json
+    # or only the manifest will be deleted
+    full_url = "%s/%s/%s/%s" % (url, art['repo'], art['path'],
+                                (artifact_name if artifact_name else ''))
+    print("Deleting artifact: %s" %
+          (artifact_name if artifact_name else art['path']))
     r = requests.delete(url=full_url, headers=headers)
-    print(r.content)
 
 
 if __name__ == '__main__':
