@@ -1,5 +1,5 @@
-import os
 import base64
+import os
 import json
 from datetime import date, timedelta
 import requests
@@ -30,6 +30,11 @@ cleanupDockerRepos = [
     'docker-local'
 ]
 
+branches_to_skip = [
+    'develop',
+    'master'
+]
+
 
 def main():
     # Clean all the repos found in the list
@@ -42,10 +47,14 @@ def main():
 def deleteOldArtifacts(repo):
     criteria = createSearchCriteria(repo=repo)
     results = findArtifacts(criteria)
-    print('\n\n\n*** Found %s removable artifacts for %s ***' %
-          (results['range']['total'], repo))
     for artifact in results['results']:
-        deleteArtifact(artifact)
+        if artifact['name'] == 'manifest.json':
+            art_name = artifact['path'].split('/')[1]
+        else:
+            art_name = artifact['name']
+        if not any(branch in art_name for branch in branches_to_skip):
+            print("Deleting artifact %s in repo %s" % (art_name, artifact['repo']))
+            deleteArtifact(artifact)
 
 
 def findArtifacts(criteria):
